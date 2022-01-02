@@ -1,0 +1,25 @@
+app:
+  name: "xiaodebu"
+  port: 8080
+  mode: "debug"
+  ver: "1.1.6"
+  default_page_size: 10
+jwt:
+  expire_seconds: 36000
+  secret: "夏天夏天悄悄过去"
+mysql:
+  host: "127.0.0.1"
+  port: 3306
+  db: "webapp"
+  user: "root"
+  password: "123456"
+redis:
+  host: "127.0.0.1"
+  port: 6379
+  db: 0
+log:
+  level: "info"
+  filename: "./app.log"
+  max_size: 100
+  max_age: 300
+  max_backups: 7

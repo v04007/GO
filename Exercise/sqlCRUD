@@ -1,0 +1,146 @@
+package main
+
+import (
+	"database/sql"
+	"fmt"
+
+	_ "github.com/go-sql-driver/mysql"
+)
+
+var db *sql.DB
+
+type user struct {
+	id   int
+	name string
+	age  int
+}
+
+func initDB() (err error) {
+	dns := "root:123456@tcp(127.0.0.1:3306)/sql_test"
+	db, err = sql.Open("mysql", dns)
+	if err != nil {
+		fmt.Printf("%s sql.open failed %v", dns, err)
+		return
+	}
+	err = db.Ping()
+	return
+}
+
+func queryOne(num int) {
+	var u user
+	sqlStr := "select id,name,age from user where id=?"
+	rowObj := db.QueryRow(sqlStr, num)
+	err := rowObj.Scan(&u.id, &u.name, &u.age)
+	if err != nil {
+		fmt.Println("Scan:", err)
+	}
+	fmt.Println(u)
+}
+
+func queryMore(nun int) {
+	queryStr := "select id,name,age from user where id > ?"
+	rowObj, err := db.Query(queryStr, nun)
+	if err != nil {
+		fmt.Println("db.Query failed ", err)
+		return
+	}
+	defer rowObj.Close()
+	for rowObj.Next() {
+		var u user
+		err := rowObj.Scan(&u.id, &u.name, &u.age)
+		if err != nil {
+			fmt.Println("rowObj.Scan failed ", err)
+			return
+		}
+		fmt.Printf("u: %#v\n", u)
+	}
+}
+
+func insert() {
+	sqlStr := `insert into user (name,age) values ("图图",57)`
+	ret, err := db.Exec(sqlStr)
+	if err != nil {
+		fmt.Println("db.Exec err:", err)
+		return
+	}
+	id, err := ret.LastInsertId()
+	if err != nil {
+		fmt.Println("ret.LastInsertId err:", err)
+		return
+	}
+	fmt.Println("id:", id)
+}
+
+func updateRow(newAge int, id int) {
+	// sqlStr := `update user set age=? where id = ?` //单条更新
+	sqlStr := `update user set age=? where id > ?` //批量更新
+	ret, err := db.Exec(sqlStr, newAge, id)
+	if err != nil {
+		fmt.Println("updateRow db.Exec err:", err)
+		return
+	}
+	n, err := ret.RowsAffected() //提示操作了几行数据
+	if err != nil {
+		fmt.Println("ret.RowsAffected err:", err)
+		return
+	}
+	fmt.Printf("更新了 %d 数据", n)
+}
+
+func deleteRow(id int) {
+	queryStr := `delete from user where id=?`
+	ret, err := db.Exec(queryStr, id)
+	if err != nil {
+		fmt.Println("delete db.Exec err:", err)
+		return
+	}
+	n, err := ret.RowsAffected() //提示操作了几行数据
+	if err != nil {
+		fmt.Println("deleteRow ret.RowsAffected err:", err)
+		return
+	}
+	fmt.Printf("delete %d ", n)
+}
+
+func prePareInsert() {//使用prePare方法预处理，防止数据库注入
+	sqlStr := `insert into user (name,age) values(?,?)`
+	stmt, err := db.Prepare(sqlStr)
+	if err != nil {
+		fmt.Println("prePareInsert Prepare failed:", err)
+		return
+	}
+	defer stmt.Close()
+	var m = map[string]int{
+		"春分": 1,
+		"谷雨": 2,
+		"惊分": 3,
+	}
+	for v, k := range m {
+		ret, err := stmt.Exec(v, k)
+		if err != nil {
+			fmt.Println("prePareInsert stmt.Exe failed:", err)
+			return
+		}
+		n, err := ret.RowsAffected()
+		if err != nil {
+			fmt.Println("prePareInsert RowsAffected failed:", err)
+			return
+		}
+		fmt.Println("insert id:", n)
+	}
+}
+
+func main() {
+	err := initDB()
+	if err != nil {
+		fmt.Printf("initDB failed %v \n", err)
+		return
+	}
+	fmt.Println("连接成功")
+	queryOne(1)
+	queryMore(2)
+	insert()
+	updateRow(1, 6)
+	deleteRow(8)
+	prePareInsert()
+}

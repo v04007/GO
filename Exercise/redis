@@ -1,0 +1,85 @@
+package main
+
+import (
+	"fmt"
+
+	"github.com/go-redis/redis"
+)
+
+// 声明一个全局的rdb变量
+var redisDB *redis.Client
+
+// 初始化连接
+func initClient() (err error) {
+	redisDB = redis.NewClient(&redis.Options{
+		Addr:     "127.0.0.1:6379",
+		DB:       0,
+		Password: "",
+	})
+	_, err = redisDB.Ping().Result()
+	if err != nil {
+		return err
+	}
+	return
+}
+
+func redisExample1() {
+	err := redisDB.Set("score", 100, 0).Err()
+	if err != nil {
+		fmt.Println("redis set failed:", err)
+		return
+	}
+	ret, err := redisDB.Get("score").Result()
+	if err != nil {
+		fmt.Println("redis get failed:", err)
+		return
+	}
+	fmt.Println("redis get value:", ret)
+
+	val, err := redisDB.Get("score").Result()
+	if err != redis.Nil {
+		fmt.Println("no value:", err)
+		return
+	} else if err != nil {
+		fmt.Println("redis get value:", err)
+	} else {
+		fmt.Println(val)
+	}
+}
+
+func redisExample2() {
+	zsetKey := "language_rank"
+	languages := []redis.Z{
+		{Score: 90.0, Member: "Golang"},
+		{Score: 98.0, Member: "Java"},
+		{Score: 95.0, Member: "Python"},
+		{Score: 97.0, Member: "JavaScript"},
+		{Score: 99.0, Member: "C/C++"},
+	}
+	// ZADD
+	num, err := redisDB.ZAdd(zsetKey, languages...).Result()
+	if err != nil {
+		fmt.Printf("zadd failed, err:%v\n", err)
+		return
+	}
+	fmt.Printf("zadd %d succ.\n", num)
+
+	// 把Golang的分数加10
+	newScore, err := redisDB.ZIncrBy(zsetKey, 10.0, "Golang").Result()
+	if err != nil {
+		fmt.Printf("zincrby failed, err:%v\n", err)
+		return
+	}
+	fmt.Printf("Golang's score is %f now.\n", newScore)
+}
+
+func main() {
+	err := initClient()
+	if err != nil {
+		fmt.Println("initClient err:", err)
+		return
+	}
+	fmt.Println("连接成功")
+	// redisExample1()
+	redisExample2()
+}

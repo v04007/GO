@@ -1,0 +1,58 @@
+package main
+
+import (
+	"fmt"
+
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/jmoiron/sqlx"
+)
+
+var db *sqlx.DB
+
+type user struct {
+	ID   int
+	Name string
+	Age  int
+}
+
+func initDB() (err error) {
+	sqlStr := `root:123456@tcp(127.0.0.1:3306)/sql_test`
+	db, err = sqlx.Connect("mysql", sqlStr)
+	if err != nil {
+		fmt.Printf("sqlx Connect failed %v", err)
+		return
+	}
+	return
+}
+
+func sqlxMore() {
+	sqlStr := `select id,name,age from user`
+	userList := make([]user, 0, 10)
+	err := db.Select(&userList, sqlStr)
+	if err != nil {
+		fmt.Printf("sqlxMore db Select %v", err)
+		return
+	}
+	fmt.Println(&userList)
+}
+
+func sqlxRow() {
+	sqlStr := `select id,name,age from user where id = ?`
+	var u user
+	err := db.Get(&u, sqlStr, 13)
+	if err != nil {
+		fmt.Printf("db get faield: %v", err)
+		return
+	}
+	fmt.Println(&u)
+}
+func main() {
+	err := initDB()
+	if err != nil {
+		fmt.Printf("initdb failed %v", err)
+		return
+	}
+	fmt.Println("连接成功")
+	// sqlxMore()
+	sqlxRow()
+}
