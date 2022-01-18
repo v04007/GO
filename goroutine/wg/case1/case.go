@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-func Case1(wg *sync.WaitGroup, ch *chan string) {
+func Case1(wg *sync.WaitGroup, ch *chan string, thiserr chan error) {
 	time.Sleep(time.Second * 5)
 	*ch <- "执行完毕case1"
 	close(*ch)
