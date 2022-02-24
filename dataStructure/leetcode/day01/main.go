@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 //twoSum LeetCode第一题
 //相对双层for循环更快，巧用map
 //map中key为nums的value，map中的value为nums的key
@@ -38,9 +36,31 @@ func isPalindrome(x int) bool {
 	return x == revertedNumber || x == revertedNumber/10
 }
 
+//romanToInt LeetCode第三题
+func romanToInt(s string) (ans int) {
+	symbolValues := map[byte]int{'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000}
+	n := len(s)
+	for i := range s {
+		value := symbolValues[s[i]]
+		//i < n-1当为倒数第二个时就不走这个逻辑，防止下标越界，
+		//因为value < symbolValues[s[i+1]]中的i+1执行到最后一个时还加1就会报panic下标越界
+		//当前值小于下一个就代表当前值为负数，例如IV（-5），I小于V（1小于5）
+		if i < n-1 && value < symbolValues[s[i+1]] {
+			ans -= value
+		} else {
+			ans += value
+		}
+	}
+	return
+}
+
 func main() {
-	nums := []int{2, 7, 11, 15}
-	target := 9
-	fmt.Println(twoSum(nums, target))
-	fmt.Println(isPalindrome(121))
+	//nums := []int{2, 7, 11, 15}
+	//target := 9
+	//fmt.Println(twoSum(nums, target))
+
+	//fmt.Println(isPalindrome(121))
+
+	//fmt.Println(romanToInt("IX"))
+
 }
