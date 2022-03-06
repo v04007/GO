@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 //twoSum LeetCode第一题
 //相对双层for循环更快，巧用map
 //map中key为nums的value，map中的value为nums的key
@@ -54,7 +56,46 @@ func romanToInt(s string) (ans int) {
 	return
 }
 
-func main() {
+func longestCommonPrefix(strs []string) string {
+	comPre := strs[0]
+	for i := 1; i < len(strs); i++ {
+		j := 0
+		for ; j < len(strs[i-1]) && j < len(strs[i]); j++ {
+			if strs[i-1][j] != strs[i][j] {
+				break
+			}
+		}
+		if j < len(comPre) {
+			comPre = strs[i][:j]
+		}
+	}
+	return comPre
+}
+
+
+//就类似找最小数 LeetCode第四题
+func longestCommonPrefix(strs []string) string {
+	comPre := strs[0]                //flower
+	for i := 1; i < len(strs); i++ { //len(strs)长度为3
+	   j := 0
+	   for ; j < len(strs[i-1]) && j < len(strs[i]); j++ { //j<len(flower) && j < len(flow)依次类推，要是j大于就代表没有，下班越界了
+		  if strs[i-1][j] != strs[i][j] { //切片字符串的 第一个成员 的 第一个字符 是不是与第二个成员的对应字符相等依次类推
+			 break
+		  }
+	   }
+	   if j < len(comPre) { //j小于第一个字符串长度，要是长于也代表不是正确的最大公约数
+		  fmt.Println("j===", j)
+		  comPre = strs[i][:j]
+	   }
+	} //外层for循环执行3次
+ 
+	return comPre
+ }
+ 
+
+
+
+ func main() {
 	//nums := []int{2, 7, 11, 15}
 	//target := 9
 	//fmt.Println(twoSum(nums, target))
@@ -62,5 +103,8 @@ func main() {
 	//fmt.Println(isPalindrome(121))
 
 	//fmt.Println(romanToInt("IX"))
+	// strs := []string{"flower", "flow", "flight"}
+	// fmt.Println(longestCommonPrefix(strs))
 
+	fmt.Println(longestCommonPrefix([]string{"flower", "flow", "flight"}))
 }
