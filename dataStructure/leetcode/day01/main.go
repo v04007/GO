@@ -56,46 +56,68 @@ func romanToInt(s string) (ans int) {
 	return
 }
 
-func longestCommonPrefix(strs []string) string {
-	comPre := strs[0]
-	for i := 1; i < len(strs); i++ {
-		j := 0
-		for ; j < len(strs[i-1]) && j < len(strs[i]); j++ {
-			if strs[i-1][j] != strs[i][j] {
-				break
-			}
-		}
-		if j < len(comPre) {
-			comPre = strs[i][:j]
-		}
-	}
-	return comPre
-}
-
+//func longestCommonPrefix(strs []string) string {
+//	comPre := strs[0]
+//	for i := 1; i < len(strs); i++ {
+//		j := 0
+//		for ; j < len(strs[i-1]) && j < len(strs[i]); j++ {
+//			if strs[i-1][j] != strs[i][j] {
+//				break
+//			}
+//		}
+//		if j < len(comPre) {
+//			comPre = strs[i][:j]
+//		}
+//	}
+//	return comPre
+//}
 
 //就类似找最小数 LeetCode第四题
 func longestCommonPrefix(strs []string) string {
 	comPre := strs[0]                //flower
 	for i := 1; i < len(strs); i++ { //len(strs)长度为3
-	   j := 0
-	   for ; j < len(strs[i-1]) && j < len(strs[i]); j++ { //j<len(flower) && j < len(flow)依次类推，要是j大于就代表没有，下班越界了
-		  if strs[i-1][j] != strs[i][j] { //切片字符串的 第一个成员 的 第一个字符 是不是与第二个成员的对应字符相等依次类推
-			 break
-		  }
-	   }
-	   if j < len(comPre) { //j小于第一个字符串长度，要是长于也代表不是正确的最大公约数
-		  fmt.Println("j===", j)
-		  comPre = strs[i][:j]
-	   }
+		j := 0
+		for ; j < len(strs[i-1]) && j < len(strs[i]); j++ { //j<len(flower) && j < len(flow)依次类推，要是j大于就代表没有，下班越界了
+			if strs[i-1][j] != strs[i][j] { //切片字符串的 第一个成员 的 第一个字符 是不是与第二个成员的对应字符相等依次类推
+				break
+			}
+		}
+		if j < len(comPre) { //j小于第一个字符串长度，要是长于也代表不是正确的最大公约数
+			fmt.Println("j===", j)
+			comPre = strs[i][:j]
+		}
 	} //外层for循环执行3次
- 
+
 	return comPre
- }
- 
+}
 
+//有效的括号 LeetCode第5题
+func isValid(s string) bool {
+	n := len(s)
+	if n%2 == 1 { //通过求余判断是不是双数
+		return false
+	}
+	pairs := map[byte]byte{ //先进栈后出栈,第一个与倒数第一个为一对，以此类推
+		')': '(',
+		']': '[',
+		'}': '{',
+	}
+	stack := []byte{}
+	for i := 0; i < n; i++ {
+		fmt.Println(pairs[s[i]] > 0, pairs[s[i]], s[i], string(s[i]))
+		if pairs[s[i]] > 0 { //byte 字节不为空，就不等于0，pairs中有定义对应值就不为空
+			if len(stack) == 0 || stack[len(stack)-1] != pairs[s[i]] { //stack[len(stack)-1] != pairs[s[i]] 第一个与最后一个是不是匹配
+				return false
+			}
+			stack = stack[:len(stack)-1]
+		} else {
+			stack = append(stack, s[i])
+		}
+	}
+	return len(stack) == 0
+}
 
-
- func main() {
+func main() {
 	//nums := []int{2, 7, 11, 15}
 	//target := 9
 	//fmt.Println(twoSum(nums, target))
@@ -106,5 +128,9 @@ func longestCommonPrefix(strs []string) string {
 	// strs := []string{"flower", "flow", "flight"}
 	// fmt.Println(longestCommonPrefix(strs))
 
-	fmt.Println(longestCommonPrefix([]string{"flower", "flow", "flight"}))
+	//第四题
+	//fmt.Println(longestCommonPrefix([]string{"flower", "flow", "flight"}))
+
+	//第五题
+	fmt.Println(isValid("()[]{{"))
 }
