@@ -1,2 +1,0 @@
-pyhon 生成grpc指令：
-python -m grpc_tools.protoc --python_out=. --grpc_python_out=. -I. .\case.proto
