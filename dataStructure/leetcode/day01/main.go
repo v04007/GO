@@ -118,9 +118,10 @@ func isValid(s string) bool {
 }
 
 func main() {
-	//nums := []int{2, 7, 11, 15}
-	//target := 9
-	//fmt.Println(twoSum(nums, target))
+	//第一题 两数之和
+	nums := []int{2, 7, 11, 15}
+	target := 9
+	fmt.Println(twoSum(nums, target))
 
 	//fmt.Println(isPalindrome(121))
 

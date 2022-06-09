@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package helloworld.v1;
+
+option go_package = "helloworld/api/helloworld/v1;v1";
+
+
+// 用户信息请求参数
+message UserRequest {
+  string name = 1;
+}
+
+// 用户信息请求响应
+message UserResponse {
+  string name = 1;
+}
+
+// 用户信息接口
+service UserInfo {
+  // 获取用户信息，请求参数为 UserRequest，返回响应为 UserResponse
+  rpc GetUserInfo (UserRequest) returns (UserResponse) {}
+}

@@ -1,0 +1,3 @@
+{"level":"INFO","ts":"2021-07-09T16:20:27.203+0800","caller":"webapp/main.go:22","msg":"load setting success"}
+{"level":"INFO","ts":"2021-07-09T16:20:27.208+0800","caller":"webapp/main.go:32","msg":"init mysql success"}
+{"level":"INFO","ts":"2021-07-09T16:20:27.210+0800","caller":"webapp/main.go:38","msg":"init redis success"}
