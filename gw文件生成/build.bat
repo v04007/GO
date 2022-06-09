@@ -1,0 +1,1 @@
+protoc --go_out=. --grpc-gateway_out . --grpc-gateway_opt paths=source_relative ./url/admDeviceStatus.proto
