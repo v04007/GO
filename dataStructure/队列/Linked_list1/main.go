@@ -6,42 +6,42 @@ import (
 	"os"
 )
 
-// 链表不能有效利用数组
-// 队列遵循先入先出原则
-// 需要实现如何实现环形的队列
+//队列是一个有序列表，可以用数组或是链表来实现。  遵循先入先出的原则。即：先存入队列的数据，要先取出。后存入的要后取出
+//单向链表不能有效利用数组
+
 type Queue struct {
 	maxSize int    //队列最大容量
 	array   [5]int //数组=>模拟队列
-	front   int    //表示指向队列 队首随着输出而改变
-	rear    int    //表示指向队列 尾部随着输入而改变
+	front   int    //表示指向队列队首随着输出而改变
+	rear    int    //表示指向队列尾部随着输入而改变
 }
 
-func (this *Queue) AddQueue(val int) (err error) {
+func (q *Queue) AddQueue(val int) (err error) {
 	//判断队列是否已满
-	if this.rear == this.maxSize-1 { //重要提示:rear 是队列尾部(含最后元素)
+	if q.rear == q.maxSize-1 { //重要提示:rear 是队列尾部(含最后元素)
 		return errors.New("queue full")
 	}
-	this.rear++ //rear 后移
-	this.array[this.rear] = val
+	q.rear++ //rear 后移
+	q.array[q.rear] = val
 	return
 }
 
 //显示队列,找到队首,然后到遍历到队尾
-func (this *Queue) shouQueue() {
+func (q *Queue) shouQueue() {
 	fmt.Println("队列当前情况是:")
-	//this.front 不包含队首的元素
-	for i := this.front + 1; i <= this.rear; i++ {
-		fmt.Printf("array[%d]=%d\t", i, this.array[i])
+	//q.front 不包含队首的元素
+	for i := q.front + 1; i <= q.rear; i++ {
+		fmt.Printf("array[%d]=%d\t", i, q.array[i])
 	}
 }
 
-func (this *Queue) GetQueue() (val int, err error) {
+func (q *Queue) GetQueue() (val int, err error) {
 	// 先判断队列是否为空
-	if this.rear == this.front { //队空
+	if q.rear == q.front { //队空
 		return -1, errors.New("queue empty")
 	}
-	this.front++
-	val = this.array[this.front]
+	q.front++
+	val = q.array[q.front]
 	return val, err
 }
 

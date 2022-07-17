@@ -8,21 +8,22 @@ import (
 )
 
 //稀疏算法
-
+//当一个数组中大部分元素为０，或者为同一个值的数组时，可以使用稀疏数组来保存该数组。
 type ValNode struct {
 	row int
 	col int
 	val interface{}
 }
-func sparseAlgorithm()  (data []ValNode,err error) {
+
+func sparseAlgorithm() (data []ValNode, err error) {
 	//先创建一个原始数组
 	var chessMap [11][11]int
-	chessMap[1][2]=1//黑子
-	chessMap[2][3]=2//白子
-//输出看看原始的数组
+	chessMap[1][2] = 1 //黑子
+	chessMap[2][3] = 2 //白子
+	//输出看看原始的数组
 	for _, value := range chessMap {
-		for _,v := range value {
-			fmt.Printf("%d\t",v)
+		for _, v := range value {
+			fmt.Printf("%d\t", v)
 		}
 		fmt.Println()
 	}
@@ -38,29 +39,29 @@ func sparseAlgorithm()  (data []ValNode,err error) {
 	}
 	saprseArr = append(saprseArr, node)
 	for key, value := range chessMap {
-		for k,v := range value {
+		for k, v := range value {
 			if v != 0 {
-				node:=ValNode{
+				node := ValNode{
 					row: key,
 					col: k,
 					val: v,
 				}
-				saprseArr=append(saprseArr,node)
+				saprseArr = append(saprseArr, node)
 			}
 		}
 	}
 	//输出稀疏数组
-	fmt.Println("输出稀疏数组\n")
+	fmt.Println("输出稀疏数组")
 	for i, node := range saprseArr {
 		fmt.Printf("%d:%d %d %d\n", i, node.row, node.col, node.val)
 	}
 	return saprseArr, nil
 }
 
-func save(data []ValNode)(err error) {
+func save(data []ValNode) (err error) {
 	file, err := os.OpenFile("./chessMap.txt", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 06666)
 	if err != nil {
-		fmt.Println("os.OpenFile failed:",err)
+		fmt.Println("os.OpenFile failed:", err)
 		return
 	}
 	defer file.Close()
@@ -69,32 +70,32 @@ func save(data []ValNode)(err error) {
 	for i, node := range data {
 		_, err = writer.WriteString(fmt.Sprintf("%d:%d %d %d\n", i, node.row, node.col, node.val))
 		if err != nil {
-			fmt.Println("writer.WriteString failed",err)
+			fmt.Println("writer.WriteString failed", err)
 			return
 		}
 	}
 	writer.Flush() //将缓存中的内容写入文件
 	return
 }
-func Open()  {
+func Open() {
 	file, err := ioutil.ReadFile("./chessMap.txt")
 	if err != nil {
-		fmt.Println("ioutil.ReadFile failed:",err)
+		fmt.Println("ioutil.ReadFile failed:", err)
 		return
 	}
 
 	fmt.Println("存储文件中读取:")
 	fmt.Println(string(file))
 }
-func main()  {
+func main() {
 	saprseArr, err := sparseAlgorithm()
 	if err != nil {
-		fmt.Println("sparseAlgorithm failed",err)
+		fmt.Println("sparseAlgorithm failed", err)
 		return
 	}
 	err = save(saprseArr)
 	if err != nil {
-		fmt.Println("save failed",err)
+		fmt.Println("save failed", err)
 		return
 	}
 	Open()

@@ -1,3 +1,6 @@
+package main
+
+import "fmt"
 func binaryserrch(nums []int, target int) int {
 	left, right := 0, len(nums)-1 //开始下表为0，结束下标为传入长度-1
 	for left <= right {           //for 循环结束条件为left小于right
@@ -11,4 +14,10 @@ func binaryserrch(nums []int, target int) int {
 		}
 	}
 	return -1
+}
+
+func main()  {
+	list := []int{1, 2, 3, 4, 5, 6, 7, 8, 9}
+	target := binaryserrch(list, 9)
+	fmt.Println("target", target)
 }
