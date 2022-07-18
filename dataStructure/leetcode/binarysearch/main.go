@@ -22,13 +22,13 @@ func isBadVersion(n int) bool {
 }
 
 func firstBadVersion(n int) int {
-	left, right := 1, n
-	for left <= right {
-		mid := (left + right) / 2
-		if isBadVersion(mid) {
-			right = mid - 1
+	left, right := 1, n //开始位置为1，结束位置为传入的版本数
+	for left <= right { //循环结束条件为开始小于传入版本数
+		mid := (left + right) / 2 //中位数
+		if isBadVersion(mid) {    //中位数是不是错误版本
+			right = mid - 1 //是的话，中位数位向左边前进一位
 		} else {
-			left = mid + 1
+			left = mid + 1 //不是的话 中位数向右边前进一位
 		}
 	}
 	return left
