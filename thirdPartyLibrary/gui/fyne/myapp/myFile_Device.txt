@@ -1,0 +1,10 @@
+[
+ {
+  "ReceiveTime": "2022-04-07 20-50",
+  "DeviceInfo": "##ST=0;CP=\u0026\u0026[{\"ENO\":\"VALUE\",\"ESTATUS\":\"0\"}]\u0026\u0026"
+ },
+ {
+  "ReceiveTime": "2022-04-07 20-53",
+  "DeviceInfo": "##ST=0;CP=\u0026\u0026[{\"ENO\":\"VALUE\",\"ESTATUS\":\"0\"}]\u0026\u0026"
+ }
+]

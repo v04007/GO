@@ -132,7 +132,52 @@ func linkedList() {
 	//end.NextNode.NextNode.NextNode.NextNode.NextNode.NextNode)
 }
 
+
+
+func removeDuplicates(nums []int) int {
+	k := 0
+	for i:=0; i< len(nums);i++{
+		//什么叫不重复元素
+		//对于有序数组来说，和前一个不一样，那就是个不同的元素，
+		//如果是第一个元素，也是不同的元素
+		if i == 0 || nums[i] != nums[i-1]{
+			//nums[k] = nums[i]
+			k++
+		}
+	}
+	return k
+}
+
+func a(nums []int)  {
+	n:=0
+	for i:=0;i<len(nums);i++{
+		if nums[i]!=0{
+			nums[n]=nums[i]
+		}
+	}
+	for n<len(nums){
+		nums[n]=0
+
+	}
+}
+
+func merge(nums1 []int, m int, nums2 []int, n int)  {
+	i:=m-1
+	j:=n-1
+	for k:=m+n-1;k>=0;k--{
+		if j<0|| i>=0&&nums1[i]>=nums2[j]{
+			nums1[k]=nums1[i]
+			i--
+		}else {
+			nums1[k]=nums2[j]
+			j--
+		}
+	}
+}
 func main() {
 	//fmt.Println(sum(10))
-	linkedList()
+	//linkedList()
+
+	list := removeDuplicates([]int{1,1,2})
+	fmt.Println(list)
 }

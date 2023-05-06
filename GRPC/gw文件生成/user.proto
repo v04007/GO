@@ -1,0 +1,110 @@
+syntax = "proto3";
+
+package user.v1;
+option go_package = "tracking/api/user;user";
+
+//import "validate/validate.proto";
+import "google/api/annotations.proto";
+
+// 用户信息相关
+service User {
+  // 用户注册
+  rpc CreateUser(CreateUserReq) returns (CreateUserReply){
+    option (google.api.http) = {
+      post: "/v1/register"
+      body: "*"
+    };
+  }
+  // 用户修改
+  rpc userRevise (ReviseReq) returns (ReviseRes) {
+    option (google.api.http) = {
+      post: "/v1/revise"
+      body: "*"
+    };
+  }
+  // 用户删除
+  rpc userDelete (DeleteReq) returns (DeleteRes) {
+    option (google.api.http) = {
+      post: "/v1/delete"
+      body: "*"
+    };
+  }
+
+  rpc Login (LoginReq) returns (LoginReply) {
+    option (google.api.http) = {
+      post: "/v1/login"
+      body: "*"
+    };
+  }
+
+  rpc Logout (LogoutReq) returns (LogoutReply) {
+    option (google.api.http) = {
+      post: "/admin/v1/logout"
+      body: "*"
+    };
+  }
+
+}
+
+
+message CreateUserReq {
+  string username = 1;
+  string password=2;
+  string email=3; // 校验email字段
+  string captcha=4; //验证码
+  string department =5; //部门
+}
+
+message CreateUserReply {
+  int64 code=1;
+  string message = 2;
+}
+
+// 用户修改
+message ReviseReq {
+  string name = 1;
+  string password=2;
+  string Mail=3;
+  string verificationCode=4;
+}
+message ReviseRes {
+  string name = 1;
+  string password=2;
+  string Mail=3;
+  string verificationCode=4;
+}
+
+// 用户删除
+message DeleteReq {
+  string name = 1;
+  string password=2;
+  string Mail=3;
+  string verificationCode=4;
+}
+message DeleteRes {
+  string name = 1;
+  string password=2;
+  string Mail=3;
+  string verificationCode=4;
+}
+
+message LoginReq {
+  string username = 1;
+  string password = 2;
+}
+
+message LoginReply {
+  uint32 id = 1;
+  string userName = 2;
+  string token = 3;
+  string refreshToken = 4;
+}
+
+message LogoutReq {
+  string Authorization = 1;
+}
+
+message LogoutReply {
+  int64 code=1;
+  string message = 2;
+}

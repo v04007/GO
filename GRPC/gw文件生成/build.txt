@@ -1,0 +1,3 @@
+protoc --go_out=. --grpc-gateway_out . --grpc-gateway_opt paths=source_relative ./user.proto
+
+protoc --go_out=. --grpc-gateway_out . --grpc-gateway_opt paths=source_relative -I ../../third_party -I . ./user.proto
