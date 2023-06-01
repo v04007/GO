@@ -1,0 +1,9 @@
+FROM scratch
+# 在容器根目录 创建一个 apps 目录
+WORKDIR /work
+# 挂载容器目录
+VOLUME ["/work"]
+# 拷贝当前目录下可以执行文件
+COPY ./shutdown /work
+EXPOSE 8080
+CMD ["/work/shutdown"]
