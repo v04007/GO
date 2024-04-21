@@ -36,6 +36,3 @@ SimpleExample:200行实现一个简单区块链
 链表
 稀疏算法
 ```
-
-特别鸣谢！
-感谢 JetBrains 公司的 IntelliJ IDEA 产品提供方便快捷的代码编辑环境。
